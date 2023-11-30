@@ -1,85 +1,35 @@
-// import the modules
-mod cache;
-mod verify;
-mod cache_commands;
-mod config;
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(unused_imports)]
+// ^ remove before submission TODO
 
-// clap is a command line argument parser
-// https://docs.rs/clap/2.33.0/clap/
-use clap::{App, Arg, SubCommand};
+// import the pub modules
+pub mod cache;
+pub mod verify;
+pub mod cache_commands;
+pub mod config;
+pub mod get_cli_args;
 
-// get cli args:
-/*
-    Total cache size
-    Block size
-    Unified vs. split I- and D-caches
-    Associativity
-    Write back vs. write through
-    Write allocate vs. write no allocate
-*/
-fn get_args() -> (u32, u32, bool, u32, bool, bool) {
-    let matches = App::new("Cache Simulator")
-        .version("1.0")
-        .author("Jason Ivey")
-        .about("Simulates a cache")
-        .arg(
-            Arg::with_name("total_cache_size")
-                .short("t")
-                .long("total_cache_size")
-                .value_name("TOTAL_CACHE_SIZE")
-                .help("Sets the total cache size")
-                .takes_value(true)
-                .required(false),
-        )
-        .arg(
-            Arg::with_name("block_size")
-                .short("b")
-                .long("block_size")
-                .value_name("BLOCK_SIZE")
-                .help("Sets the block size")
-                .takes_value(true)
-                .required(false),
-        )
-        .arg(
-            Arg::with_name("associativity")
-                .short("a")
-                .long("associativity")
-                .value_name("ASSOCIATIVITY")
-                .help("Sets the associativity")
-                .takes_value(true)
-                .required(false),
-        )
-        .arg(
-            Arg::with_name("write_back")
-                .short("w")
-                .long("write_back")
-                .value_name("WRITE_BACK")
-                .help("Sets the write back")
-                .takes_value(true)
-                .required(false),
-        )
-        .arg(
-            Arg::with_name("write_allocate")
-                .short("l")
-                .long("write_allocate")
-                .value_name("WRITE_ALLOCATE")
-                .help("Sets the write allocate")
-                .takes_value(true)
-                .required(false),
-        )
-        .arg(
-            Arg::with_name("split_cache")
-                .short("s")
-                .long("split_cache")
-                .value_name("SPLIT_CACHE")
-                .help("Sets the split cache")
-                .takes_value(true)
-                .required(false),
-        )
-        .get_matches();
+
+// main function   
+fn main() 
+{
+    let args = get_cli_args::get_values();
+
+    // get vars
+    let block_size              = args.0;
+    let unified_cache_size      = args.1;
+    let instruction_cache_size  = args.2;
+    let data_cache_size         = args.3;
+    let associativity           = args.4;
+    let write_back              = args.5;
+    let write_allocate          = args.6;
+    let split_cache             = args.7;
 
     
 
-fn main() {
-    println!("Hello, world!");
+
 }
+
+
+
