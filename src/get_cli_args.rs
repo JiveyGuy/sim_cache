@@ -140,5 +140,20 @@ pub fn get_values() -> (u32, u32, u32, u32, u32, bool, bool, bool)
         None     => config::DEFAULT_SPLIT_CACHE,
     };
 
+    // we need to verify that only one of the write policies is set
+    // and only one of the allocation policies is set
+    // if not, use the default values
+    if args.wb.is_some() && args.wt.is_some()
+    {
+        println!("Error: cannot set both write back and write through policies. Using default write back policy.");
+        return (block_size, unified_cache_size, instruction_cache_size, data_cache_size, associativity, config::DEFAULT_WRITE_BACK, write_allocate, split_cache);
+    }
+
+    if args.wa.is_some() && args.nw.is_some()
+    {
+        println!("Error: cannot set both write allocate and no write allocate policies. Using default write allocate policy.");
+        return (block_size, unified_cache_size, instruction_cache_size, data_cache_size, associativity, write_back, config::DEFAULT_WRITE_ALLOCATE, split_cache);
+    }
+
     return (block_size, unified_cache_size, instruction_cache_size, data_cache_size, associativity, write_back, write_allocate, split_cache);
 } 
