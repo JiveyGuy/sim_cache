@@ -76,37 +76,37 @@ pub fn get_values() -> (u32, u32, u32, u32, u32, bool, bool, bool)
     // get vars
     let block_size          = match args.bs 
     {
-        Some(bs) => bs,
-        None     => config::DEFAULT_BLOCK_SIZE,
+        Some(ref bs) => bs,
+        None     => &config::DEFAULT_BLOCK_SIZE,
     };
     
     let unified_cache_size  = match args.us 
     {
-        Some(us) => us,
-        None     => config::DEFAULT_TOTAL_CACHE_SIZE,
+        Some(ref us) => us,
+        None     => &config::DEFAULT_TOTAL_CACHE_SIZE,
     };
 
     let instruction_cache_size  = match args.is 
     {
-        Some(is) => is,
-        None     => config::DEFAULT_TOTAL_CACHE_SIZE,
+        Some(ref is) => is,
+        None     => &config::DEFAULT_TOTAL_CACHE_SIZE,
     };
 
     let data_cache_size  = match args.ds 
     {
-        Some(ds) => ds,
-        None     => config::DEFAULT_TOTAL_CACHE_SIZE,
+        Some(ref ds) => ds,
+        None     => &config::DEFAULT_TOTAL_CACHE_SIZE,
     };
 
     let associativity       = match args.a 
     {
-        Some(a) => a,
-        None    => config::DEFAULT_ASSOCIATIVITY,
+        Some(ref a) => a,
+        None    => &config::DEFAULT_ASSOCIATIVITY,
     };
 
     let write_back          = match args.wb 
     {
-        Some(wb) => match wb.as_str()
+        Some(ref wb) => match wb.as_str()
         {
             "true"  => true,
             "false" => false,
@@ -118,7 +118,7 @@ pub fn get_values() -> (u32, u32, u32, u32, u32, bool, bool, bool)
 
     let write_allocate      = match args.wa 
     {
-        Some(wa) => match wa.as_str()
+        Some(ref wa) => match wa.as_str()
         {
             "true"  => true,
             "false" => false,
@@ -130,7 +130,7 @@ pub fn get_values() -> (u32, u32, u32, u32, u32, bool, bool, bool)
 
     let split_cache         = match args.nw 
     {
-        Some(nw) => match nw.as_str()
+        Some(ref nw) => match nw.as_str()
         {
             "true"  => true,
             "false" => false,
@@ -146,14 +146,15 @@ pub fn get_values() -> (u32, u32, u32, u32, u32, bool, bool, bool)
     if args.wb.is_some() && args.wt.is_some()
     {
         println!("Error: cannot set both write back and write through policies. Using default write back policy.");
-        return (block_size, unified_cache_size, instruction_cache_size, data_cache_size, associativity, config::DEFAULT_WRITE_BACK, write_allocate, split_cache);
+        return (*block_size, *unified_cache_size, *instruction_cache_size, *data_cache_size, *associativity, write_back, write_allocate, split_cache);
     }
 
     if args.wa.is_some() && args.nw.is_some()
     {
         println!("Error: cannot set both write allocate and no write allocate policies. Using default write allocate policy.");
-        return (block_size, unified_cache_size, instruction_cache_size, data_cache_size, associativity, write_back, config::DEFAULT_WRITE_ALLOCATE, split_cache);
+        return (*block_size, *unified_cache_size, *instruction_cache_size, *data_cache_size, *associativity, write_back, write_allocate, split_cache);
     }
 
-    return (block_size, unified_cache_size, instruction_cache_size, data_cache_size, associativity, write_back, write_allocate, split_cache);
+    // make sure to dereference the values
+    return (*block_size, *unified_cache_size, *instruction_cache_size, *data_cache_size, *associativity, write_back, write_allocate, split_cache);
 } 
