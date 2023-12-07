@@ -155,6 +155,22 @@ pub fn get_values() -> (u32, u32, u32, u32, u32, bool, bool, bool)
         return (*block_size, *unified_cache_size, *instruction_cache_size, *data_cache_size, *associativity, write_back, write_allocate, split_cache);
     }
 
+    // verify that if split cache is set, the instruction and data cache sizes are set, but not the unified cache size
+    if split_cache
+    {
+        if instruction_cache_size.is_none() || data_cache_size.is_none()
+        {
+            println!("Error: split cache is set, but instruction and data cache sizes are not set. Using default unified cache size.");
+            return (*block_size, *unified_cache_size, *instruction_cache_size, *data_cache_size, *associativity, write_back, write_allocate, split_cache);
+        }
+
+        if unified_cache_size.is_some()
+        {
+            println!("Error: split cache is set, but unified cache size is set. Using default unified cache size.");
+            return (*block_size, *unified_cache_size, *instruction_cache_size, *data_cache_size, *associativity, write_back, write_allocate, split_cache);
+        }
+    }
+
     // make sure to dereference the values
     return (*block_size, *unified_cache_size, *instruction_cache_size, *data_cache_size, *associativity, write_back, write_allocate, split_cache);
 } 

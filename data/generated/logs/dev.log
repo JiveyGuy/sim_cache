@@ -1,0 +1,42 @@
+   Compiling sim_cache v0.1.0 (/home/crogtonYT/dev/sim_cache)
+error: expected identifier, found `{`
+  --> src/cache.rs:28:5
+   |
+16 | struct LRU
+   |        --- while parsing this struct
+...
+28 |     {
+   |     ^ expected identifier
+
+error[E0204]: the trait `Copy` cannot be implemented for this type
+   --> src/cache.rs:133:17
+    |
+133 | #[derive(Clone, Copy, Debug)]
+    |                 ^^^^
+...
+140 |     sets                : Vec<u32>, // number of valid entries in each set
+    |     ------------------------------ this field does not implement `Copy`
+141 |     contents            : u32,      // number of valid entries in the cache
+142 |     lines               : Vec<CacheLine>, // cache lines
+    |     ------------------------------------ this field does not implement `Copy`
+    |
+    = note: this error originates in the derive macro `Copy` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0204]: the trait `Copy` cannot be implemented for this type
+  --> src/cache_commands.rs:9:17
+   |
+9  | #[derive(Clone, Copy, Debug)]
+   |                 ^^^^
+...
+14 |     pub trace_message   : Option<String>,
+   |     ------------------------------------ this field does not implement `Copy`
+   |
+note: the `Copy` impl for `Option<std::string::String>` requires that `std::string::String: Copy`
+  --> src/cache_commands.rs:14:27
+   |
+14 |     pub trace_message   : Option<String>,
+   |                           ^^^^^^^^^^^^^^
+   = note: this error originates in the derive macro `Copy` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+For more information about this error, try `rustc --explain E0204`.
+error: could not compile `sim_cache` (bin "sim_cache") due to 3 previous errors

@@ -1,3 +1,4 @@
+#[derive(Clone, Copy, Debug)]
 pub enum CommandType
 {
     DataLoadRefference,
@@ -5,6 +6,7 @@ pub enum CommandType
     InstructionLoadRefference,
 }
 
+#[derive(Clone, Copy, Debug)]
 pub struct Command
 {
     pub command_type    : CommandType,
